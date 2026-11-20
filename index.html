@@ -925,7 +925,7 @@ canvas{touch-action:none}
             // v27 · yalnız dış yüzler: dışbükey cam kesitinde ön yüzler üst üste binmez → tek-kat şablon hilesi artık bazen üst yüz
             // yerine alt yüzü/yan duvarı seçip yol kenarında basamak basamak desen oluşturmaz
             MAT.roadGlass.side = THREE.FrontSide;
-            MAT.roadGlass.depthFunc = THREE.LessEqualDepth; Object.assign(MAT.roadGlass, { stencilWrite: false, stencilRef: 1, stencilWriteMask: 1, stencilFuncMask: 1, stencilFunc: THREE.NotEqualStencilFunc, stencilZPass: THREE.ReplaceStencilOp, stencilFail: THREE.KeepStencilOp, stencilZFail: THREE.KeepStencilOp });
+            Object.assign(MAT.roadGlass, { stencilWrite: true, stencilRef: 1, stencilWriteMask: 1, stencilFuncMask: 1, stencilFunc: THREE.NotEqualStencilFunc, stencilZPass: THREE.ReplaceStencilOp, stencilFail: THREE.KeepStencilOp, stencilZFail: THREE.KeepStencilOp });
             MAT.sphereGlass = lgMaterial({ thick: 5.0, frost: 0.0, disp: 0.06, tint: 0xf4fbff, tintA: 0.04, refl: 1.0, glare: 1.6 });
             MAT.ringGlass = lgMaterial({ thick: 2.0, frost: 0.0, disp: 0.05, tint: 0xfff4e2, tintA: 0.08, refl: 1.0, glare: 1.8 });
             MAT.sphereMirror = new THREE.MeshStandardMaterial({ color: 0xf6f7fa, metalness: 1, roughness: 0.01, envMap: liveEnv, envMapIntensity: 1.25 });
@@ -1640,7 +1640,6 @@ canvas{touch-action:none}
             };
             const glassRoads = new THREE.Mesh(ribbon(GLASS_PROFILE, 0), MAT.roadGlass);
             glassRoads.renderOrder = 6; hiddenInMirror.push(glassRoads);
-            { const pre = new THREE.Mesh(glassRoads.geometry, new THREE.MeshBasicMaterial({ colorWrite: false, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2 })); pre.renderOrder = 5.5; pre.matrixAutoUpdate = false; pre.updateMatrix(); scene.add(pre); hiddenInMirror.push(pre); hideInEnv.push(pre); } // v36 · yol mimarisi: kavşaklarda tek, kesintisiz cam yüzey glassRoads.matrixAutoUpdate = false; glassRoads.updateMatrix(); scene.add(glassRoads); LG.meshes.push(glassRoads);
             PAINT.geos.push(ribbon(GLASS_PROFILE.slice(2, 11), 0.035));
             const nodeGeo = new THREE.CylinderGeometry(NR, NR, 0.97, 72);
             const nodeTop = new THREE.RingGeometry(0.05, NR - 0.15, 48, 8); nodeTop.rotateX(-Math.PI / 2);
